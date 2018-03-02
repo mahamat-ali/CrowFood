@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Restaurant</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="card-background-page">
+  <div *ngIf="restaurants">
+    <ion-card *ngFor="let restaurant of restaurants" (click)="restaurantSelected($event, restaurant)">
+      <img src="{{BaseURL + restaurant.image}}" />
+    </ion-card>
+  </div>
+  <div [hidden]="restaurants || errMess">
+    <ion-spinner></ion-spinner>
+    <h4>Loading . . . Please Wait</h4>
+  </div>
+  <div *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
+  </div>
+
+</ion-content>
