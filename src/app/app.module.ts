@@ -22,6 +22,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { RestaurantProvider } from '../providers/restaurant/restaurant';
 import { CartProvider } from '../providers/cart/cart';
 import { CartPage } from '../pages/cart/cart';
+import { OrderPage } from '../pages/order/order';
+
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import { CartPage } from '../pages/cart/cart';
     DishdetailPage,
     LoginPage,
     RestaurantPage,
-    CartPage
+    CartPage,
+    OrderPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { CartPage } from '../pages/cart/cart';
     DishdetailPage,
     LoginPage,
     RestaurantPage,
-    CartPage
+    CartPage,
+    OrderPage
   ],
   providers: [
     StatusBar,
@@ -63,7 +67,7 @@ import { CartPage } from '../pages/cart/cart';
     ProcessHttpmsgProvider,
     { provide: 'BaseURL', useValue: baseURL },
     RestaurantProvider,
-    CartProvider
+    CartProvider,
   ]
 })
 export class AppModule {}

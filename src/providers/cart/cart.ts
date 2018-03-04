@@ -52,4 +52,8 @@ export class CartProvider {
       return Observable.throw('Deleting non-existant cart item' + id);
     }
   }
+
+  buy(){
+    
+  }
 }

@@ -10,6 +10,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { RestaurantPage } from '../pages/restaurant/restaurant';
 import { CartPage } from '../pages/cart/cart';
 import { LoginPage } from '../pages/login/login';
+import { OrderPage } from '../pages/order/order';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class MyApp {
       { title: 'Home', icon: 'home', component: HomePage },
       { title: 'Restaurants', icon: 'restaurant', component: RestaurantPage },
       { title: 'Cart', icon: 'ios-cart-outline', component: CartPage },
+      { title: 'Order', icon: 'ios-cash', component: OrderPage },
       { title: 'Contact Us', icon: 'contact', component: ContactPage },
       { title: 'About Us', icon: 'information-circle', component: AboutPage }
 

@@ -22,12 +22,20 @@
   <div *ngIf="cartItems">
     <ion-list>
       <ion-item-sliding *ngFor="let cartItem of cartItems" #item>
+        <ion-item-options side="left">
+          <button ion-button color="primary" (click)="addQuantity(cartItem.quantity)">
+              <ion-icon name="add"></ion-icon>
+          </button>
+          <button ion-button color="danger" (click)="removeQuantity(cartItem.quantity)">
+              <ion-icon name="remove"></ion-icon>
+          </button>
+        </ion-item-options>
         <ion-item>
           <ion-thumbnail item-left>
             <img src="{{BaseURL + cartItem.image}}" />
           </ion-thumbnail>
-          <h3>{{ cartItem.name }}</h3>
-          <p>{{ cartItem.description }}</p>
+          <h3>{{cartItem.name}}</h3>
+          <p>Price: {{cartItem.price}} rupees</p>
         </ion-item>
         <ion-item-options side="right">
           <button ion-button color="danger" (click)="deleteItemFromCart(item, cartItem.id)">
@@ -46,3 +54,13 @@
     <h4>{{ errMess }}</h4>
   </div>
 </ion-content>
+<ion-footer>
+  <div *ngIf="cartItems">
+    <div *ngIf="ordered">
+      <button no-shadow ion-button color="balanced" (click)="goToOrder(cartItems)" full *ngIf="cartItems">
+        <ion-icon name="checkin"></ion-icon>
+        order
+      </button>
+    </div>
+  </div>
+</ion-footer>
