@@ -17,6 +17,15 @@
 
 
 <ion-content padding>
-  <p>Total Items: {{totalPrice}}</p>
-  <p>Total price: {{totalQuantity}}</p>
+  <ion-card>
+    <ion-card-header color="secondary">
+       Order Successful
+    </ion-card-header>
+    <ion-card-content color="grey">
+      <div>
+        <h3 class="card-title" text-uppercase>Total Items: {{totalQuantity}}</h3>
+        <h3 class="card-title" text-uppercase>Total price: {{totalPrice}}&#8377;</h3>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

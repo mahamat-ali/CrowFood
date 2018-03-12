@@ -18,14 +18,18 @@ export class OrderPage implements OnInit{
   totalPrice: number;
   totalQuantity: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams) {
     this.totalPrice = navParams.data.totalPrice;
     this.totalQuantity = navParams.data.totalQuantity;
   }
   ngOnInit() {
   }
+  
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderPage');
   }
+
+  
 
 }

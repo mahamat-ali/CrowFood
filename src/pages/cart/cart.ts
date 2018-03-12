@@ -70,6 +70,7 @@ export class CartPage implements OnInit{
       totalPrice: this.price,
       totalQuantity: this.quantity
     });
+    
   }
 
 
