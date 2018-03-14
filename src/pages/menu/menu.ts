@@ -1,11 +1,10 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Dish } from '../../shared/dish';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { DishProvider } from '../../providers/dish/dish';
+import { IonicPage, NavController, NavParams, ToastController, Menu } from 'ionic-angular';
+import { MenuProvider  } from '../../providers/menu/menu';
 import { DishdetailPage } from '../dishdetail/dishdetail';
 import { CartProvider } from '../../providers/cart/cart';
-import { RestaurantProvider } from '../../providers/restaurant/restaurant';
-import { Restaurant } from '../../shared/restaurants';
+import { Menus } from '../../models/menu';
 /**
  * Generated class for the MenuPage page.
  *
@@ -18,29 +17,32 @@ import { Restaurant } from '../../shared/restaurants';
   selector: 'page-menu',
   templateUrl: 'menu.html',
 })
+
 export class MenuPage implements OnInit {
-  dishes: Dish[];
+  menus: Menus[]
   errMess: string;
-  dish: Dish;
+  menu: Menus;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       @Inject('BaseURL') private BaseURL,
       private toastCtrl: ToastController,
       private cartservice: CartProvider,
-      private dishservice: DishProvider,
-      private restaurantservice: RestaurantProvider){
+      private menuservice: MenuProvider){
+        
+    
   }
     
 
   ngOnInit(){
-    this.dishservice.getDishes()
-      .subscribe(dishes => this.dishes = dishes,
-        errmess => this.errMess = errmess);
-       
+    this.menuservice.getMenus()
+      .subscribe(menus => this.menus = menus,
+        errmess => this.errMess = errmess); 
+      
   }
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad MenuPage');
+    console.log(this.menus);
   }
 
   dishSelected(event, dish) {
@@ -54,10 +56,10 @@ export class MenuPage implements OnInit {
   
 
   addToItemsInCart() {
-    console.log('Adding to cart', this.dish.id);
-    this.cartservice.addToCart(this.dish.id);
+    console.log('Adding to cart', this.menu.id);
+    this.cartservice.addToCart(this.menu.id);
     this.toastCtrl.create({
-      message: 'Dish ' + this.dish.id + ' added to cart as successfully',
+      message: 'Dish ' + this.menu.id + ' added to cart as successfully',
       position: 'middle',
       duration: 3000
     }).present();

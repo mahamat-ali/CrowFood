@@ -22,7 +22,12 @@ import { RestaurantProvider } from '../providers/restaurant/restaurant';
 import { CartProvider } from '../providers/cart/cart';
 import { CartPage } from '../pages/cart/cart';
 import { OrderPage } from '../pages/order/order';
-
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { FIREBASE_CONFIG } from './firebase.credentials';
+import { CrowdservingProvider } from '../providers/crowdserving/crowdserving';
+import { MenuProvider } from '../providers/menu/menu';
 
 
 @NgModule({
@@ -41,6 +46,8 @@ import { OrderPage } from '../pages/order/order';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    AngularFireDatabaseModule,
     HttpModule,
     HttpClientModule,
     IonicStorageModule.forRoot()
@@ -67,6 +74,9 @@ import { OrderPage } from '../pages/order/order';
     { provide: 'BaseURL', useValue: baseURL },
     RestaurantProvider,
     CartProvider,
+    CrowdservingProvider,
+    AngularFirestore,
+    MenuProvider
   ]
 })
 export class AppModule {}

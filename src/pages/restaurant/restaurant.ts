@@ -3,6 +3,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RestaurantProvider } from '../../providers/restaurant/restaurant';
 import { Restaurant } from '../../shared/restaurants';
 import { MenuPage } from '../menu/menu';
+import { RestaurantModel } from '../../models/restaurant';
+import { CrowdservingProvider } from '../../providers/crowdserving/crowdserving';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase } from 'angularfire2/database';
+
 /**
  * Generated class for the RestaurantPage page.
  *
@@ -17,13 +22,15 @@ import { MenuPage } from '../menu/menu';
 })
 export class RestaurantPage implements OnInit{
 
-  restaurants: Restaurant[];
-  restaurant: Restaurant;
-  errMess: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    @Inject('BaseURL') private BaseURL,
-    private restaurantservice: RestaurantProvider) {
+  restaurants: RestaurantModel[];
+  errMess: string;
+  restaurant: RestaurantModel;
+
+  constructor(private database: AngularFireDatabase,
+    private restaurantservice: CrowdservingProvider,
+    private navCtrl: NavController) {
+     
   }
 
   ionViewDidLoad() {
@@ -31,10 +38,11 @@ export class RestaurantPage implements OnInit{
   }
 
   ngOnInit() {
-    this.restaurantservice.getRestaurants()
+    this.restaurantservice.getRestaurantsList()
       .subscribe(restaurants => this.restaurants = restaurants,
-        errmess => this.errMess = errmess);
+        errMess => this.errMess = errMess);
   }
+
 
   restaurantSelected(event, restaurant) {
     // That's right, we're pushing to ourselves!

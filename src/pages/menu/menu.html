@@ -11,14 +11,17 @@
 
 <ion-content class="card-background-page">
 
-  <div *ngIf="dishes">
-    <ion-card *ngFor="let dish of dishes" (click)="dishSelected($event, dish)">
-      <img src="{{BaseURL + dish.image}}" />
-      <div class="card-title">{{dish.name}}</div>
-      <div class="card-subtitle">{{dish.description}}</div>
-    </ion-card>
+  <div *ngIf="menus">
+    <div *ngFor="let menues of menus">
+      <ion-card *ngFor="let dish of menues.menu" (click)="dishSelected($event, dish)">
+        <img src="{{dish.image}}" />
+        <div class="card-title">{{dish.name}}</div>
+        <div class="card-subtitle">{{dish.description}}</div>
+      </ion-card>
+    </div>
   </div>
-  <div [hidden]="dishes || errMess">
+  
+  <div [hidden]="menus || errMess">
     <ion-spinner></ion-spinner>
     <h4>Loading . . . Please Wait</h4>
   </div>
