@@ -12,7 +12,7 @@
 
 <ion-content class="card-background-page">
   <div *ngIf="restaurants">
-    <ion-card *ngFor="let restaurant of restaurants" (click)="restaurantSelected($event, restaurant)">
+    <ion-card *ngFor="let restaurant of restaurants" (click)="restaurantSelected($event, restaurant, restaurant.name)">
       <img src="{{restaurant.image}}" />
     </ion-card>
   </div>

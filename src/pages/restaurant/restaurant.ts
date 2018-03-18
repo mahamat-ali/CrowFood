@@ -44,10 +44,11 @@ export class RestaurantPage implements OnInit{
   }
 
 
-  restaurantSelected(event, restaurant) {
+  restaurantSelected(event, restaurant, name:string) {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(MenuPage, {
-      restaurant: restaurant
+      restaurant: restaurant,
+      restoName: name
     });
   }
   

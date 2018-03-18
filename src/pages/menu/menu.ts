@@ -19,24 +19,30 @@ import { Menus } from '../../models/menu';
 })
 
 export class MenuPage implements OnInit {
-  menus: Menus[]
+  menus: Menus[];
   errMess: string;
   menu: Menus;
+  restaurantName: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       @Inject('BaseURL') private BaseURL,
       private toastCtrl: ToastController,
       private cartservice: CartProvider,
       private menuservice: MenuProvider){
-        
-    
+      this.restaurantName = navParams.get('restoName');
+      
   }
     
 
   ngOnInit(){
-    this.menuservice.getMenus()
-      .subscribe(menus => this.menus = menus,
-        errmess => this.errMess = errmess); 
+    // this.menuservice.getMenus()
+    //   .subscribe(menus => this.menus = menus,
+    //     errmess => this.errMess = errmess); 
+    this.menuservice.getMenus().forEach(menu => {
+      for(let i = 0; i < menu.length; i++){
+        this.menus = menu;
+      }
+    })
       
   }
   
