@@ -13,11 +13,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-about',
   templateUrl: 'about.html',
 })
-export class AboutPage{
-  
+export class AboutPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    @Inject('BaseURL') private BaseURL) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams){
+    
   }
 
 

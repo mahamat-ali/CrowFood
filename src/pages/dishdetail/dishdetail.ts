@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Dish } from '../../shared/dish';
 import { CartProvider } from '../../providers/cart/cart';
-import { baseURL } from '../../shared/baseurl';
+
 /**
  * Generated class for the DishdetailPage page.
  *
@@ -20,7 +20,6 @@ export class DishdetailPage {
   errMess: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    @Inject('BaseURL') private BaseURL,
     private toastCtrl: ToastController,
     private cartservice: CartProvider) {
 
@@ -34,7 +33,7 @@ export class DishdetailPage {
     console.log('ionViewDidLoad DishdetailPage');
   }
 
-  
+
   addToItemsInCart() {
     console.log('Adding to cart', this.dish.id);
     this.cartItem = this.cartservice.addToCart(this.dish.id);

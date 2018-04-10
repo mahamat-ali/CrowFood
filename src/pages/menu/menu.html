@@ -12,12 +12,12 @@
 <ion-content class="card-background-page">
 
   <div *ngIf="menus">
-    <div *ngFor="let menues of menus" >
+    <div *ngFor="let menues of menus">
       <div *ngIf="(menues.name == restaurantName)">
         <ion-card *ngFor="let dish of menues.menu" (click)="dishSelected($event, dish)">
-            <img src="{{dish.image}}" />
-            <div class="card-title">{{dish.name}}</div>
-            <div class="card-subtitle">{{dish.description}}</div>
+          <img src="{{dish.image}}" />
+          <div class="card-title">{{dish.name}}</div>
+          <div class="card-subtitle">{{dish.description}}</div>
         </ion-card>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject} from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Dish } from '../../shared/dish';
 import { IonicPage, NavController, NavParams, ToastController, Menu } from 'ionic-angular';
-import { MenuProvider  } from '../../providers/menu/menu';
+import { MenuProvider } from '../../providers/menu/menu';
 import { DishdetailPage } from '../dishdetail/dishdetail';
 import { CartProvider } from '../../providers/cart/cart';
 import { Menus } from '../../models/menu';
@@ -25,27 +25,26 @@ export class MenuPage implements OnInit {
   restaurantName: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-      @Inject('BaseURL') private BaseURL,
-      private toastCtrl: ToastController,
-      private cartservice: CartProvider,
-      private menuservice: MenuProvider){
-      this.restaurantName = navParams.get('restoName');
-      
-  }
-    
+    private toastCtrl: ToastController,
+    private cartservice: CartProvider,
+    private menuservice: MenuProvider) {
+    this.restaurantName = navParams.get('restoName');
 
-  ngOnInit(){
+  }
+
+
+  ngOnInit() {
     // this.menuservice.getMenus()
     //   .subscribe(menus => this.menus = menus,
     //     errmess => this.errMess = errmess); 
     this.menuservice.getMenus().forEach(menu => {
-      for(let i = 0; i < menu.length; i++){
+      for (let i = 0; i < menu.length; i++) {
         this.menus = menu;
       }
     })
-      
+
   }
-  
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad MenuPage');
     console.log(this.menus);
@@ -57,9 +56,9 @@ export class MenuPage implements OnInit {
     });
   }
 
- 
 
-  
+
+
 
   addToItemsInCart() {
     console.log('Adding to cart', this.menu.id);
@@ -71,5 +70,5 @@ export class MenuPage implements OnInit {
     }).present();
   }
 
-  
+
 }

@@ -22,7 +22,7 @@ export class MenuProvider {
   // menu: Menus;
   // errMsg: String;
 
-  constructor(private afs: AngularFirestore){
+  constructor(private afs: AngularFirestore) {
     console.log('Hello Menu Provider');
 
   }
@@ -39,6 +39,6 @@ export class MenuProvider {
       });
   }
 
-  
-} 
+
+}
 

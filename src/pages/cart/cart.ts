@@ -1,10 +1,18 @@
-import { Component, OnInit, Inject} from '@angular/core';
-import { IonicPage, NavController, NavParams, ItemSliding, ToastController, LoadingController, AlertController } from 'ionic-angular';
+import { Component, OnInit, Inject } from '@angular/core';
+import { IonicPage, NavController, NavParams, ItemSliding, ToastController, LoadingController, AlertController, DateTime } from 'ionic-angular';
 import { CartProvider } from '../../providers/cart/cart';
-import { Dish } from '../../shared/dish';
-import { baseURL } from '../../shared/baseurl';
+import { Dishes } from '../../models/dishes';
 import { OrderPage } from '../order/order';
-
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { RestaurantModel } from '../../models/restaurant';
+import * as firestore from 'firebase/app';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs/Observable';
+import { Action } from 'rxjs/scheduler/Action';
 
 
 
@@ -24,14 +32,17 @@ import { OrderPage } from '../order/order';
   selector: 'page-cart',
   templateUrl: 'cart.html',
 })
-export class CartPage implements OnInit{
+export class CartPage implements OnInit {
 
-  cartItems: Dish[];
+  orderCollection: AngularFirestoreCollection<any> = this.afs.collection('orders');
+  cartItems: Dishes[];
   errMess: string;
   quantity: number;
   price: number;
   token: number;
+  orderId: number;
   OrderPage: any;
+  orderDate: number;
   public ordered: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -39,38 +50,52 @@ export class CartPage implements OnInit{
     public toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    @Inject('BaseURL') private BaseURL) {
-      this.OrderPage = OrderPage;
-      this.price = 0;
-      this.quantity = 0;
-    }
+    private afs: AngularFirestore) {
+    this.OrderPage = OrderPage;
+    this.price = 0;
+    this.quantity = 0;
+  }
 
 
   ngOnInit() {
     this.cartservice.getItemsAddedToCarts()
       .subscribe(cartItems => this.cartItems = cartItems,
-        errmess => this.errMess = errmess);    
+        errmess => this.errMess = errmess);
   }
-  addQuantity(){
+  addQuantity() {
     return this.quantity += 1;
   }
 
-  removeQuantity(){
+  removeQuantity() {
     return this.quantity -= 1;
   }
 
- 
+
   goToOrder(cartItems) {
-    for (const cartItem of cartItems){
-      this.price += cartItem.price;
+    for (const cartItem of cartItems) {
+      this.price += parseInt(cartItem.price);
       this.quantity += parseInt(cartItem.quantity);
+      this.orderDate = new Date().getDate();
     }
+
+    this.orderCollection.add({
+      quantity: this.quantity,
+      price: this.price,
+      orderDate: new Date().getDate()
+    }).then((docRef) => {
+      this.orderCollection.doc(docRef.id).update({
+        orderId: docRef.id
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+
     this.ordered = !this.ordered;
     this.navCtrl.push(this.OrderPage, {
       totalPrice: this.price,
-      totalQuantity: this.quantity
+      totalQuantity: this.quantity,
+      orderDate: this.orderDate
     });
-    
   }
 
 

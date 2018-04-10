@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Dish } from '../../shared/dish';
+import { Dishes } from '../../models/dishes';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
-import { baseURL } from '../../shared/baseurl';
-import { ProcessHttpmsgProvider } from '../process-httpmsg/process-httpmsg';
 import { DishProvider } from '../dish/dish';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
@@ -20,7 +18,7 @@ export class CartProvider {
 
   items: Array<any>
   constructor(public http: Http,
-    private dishservice: DishProvider){
+    private dishservice: DishProvider) {
     console.log('Hello CartProvider Provider');
     this.items = [];
   }
@@ -36,12 +34,12 @@ export class CartProvider {
     return this.items.some(el => el === id);
   }
 
-  getItemsAddedToCarts(): Observable<Dish[]> {
+  getItemsAddedToCarts(): Observable<Dishes[]> {
     return this.dishservice.getDishes()
       .map(dishes => dishes.filter(dish => this.items.some(el => el === dish.id)));
   }
 
-  deleteItemFromCart(id: number): Observable<Dish[]> {
+  deleteItemFromCart(id: number): Observable<Dishes[]> {
     let index = this.items.indexOf(id);
     if (index >= 0) {
       this.items.splice(index, 1);
@@ -53,7 +51,5 @@ export class CartProvider {
     }
   }
 
-  buy(){
-    
-  }
+
 }

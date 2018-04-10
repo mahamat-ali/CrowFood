@@ -1,63 +1,82 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { HomePage } from '../pages/home/home';
-import { AboutPage } from '../pages/about/about';
-import { MenuPage } from '../pages/menu/menu';
-import { ContactPage } from '../pages/contact/contact';
+import { App, MenuController, Nav, Platform } from 'ionic-angular';
+import { HomePage } from '../pages/home/home.page';
+import { LoginPage } from '../pages/login/login';
+import { AuthService } from '../services/auth.service';
 import { RestaurantPage } from '../pages/restaurant/restaurant';
 import { CartPage } from '../pages/cart/cart';
-import { LoginPage } from '../pages/login/login';
 import { OrderPage } from '../pages/order/order';
-
+import { AboutPage } from '../pages/about/about';
+import { ContactPage } from '../pages/contact/contact';
 
 @Component({
-  templateUrl: 'app.html'
+	templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+	pages;
+	rootPage;
 
-  rootPage: any = HomePage;
+	private app;
+	private platform;
+	private menu: MenuController;
 
-  pages: Array<{title: string, icon: string, component: any}>;
+	@ViewChild(Nav) nav: Nav;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    public modalCtrl: ModalController) {
-    this.initializeApp();
+	constructor(app: App, platform: Platform,
+		menu: MenuController,
+		private statusBar: StatusBar,
+		private auth: AuthService) {
+		this.menu = menu;
+		this.app = app;
+		this.platform = platform;
+		this.initializeApp();
 
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', icon: 'home', component: HomePage },
-      { title: 'Restaurants', icon: 'restaurant', component: RestaurantPage },
-      { title: 'Cart', icon: 'ios-cart-outline', component: CartPage },
-      { title: 'Order', icon: 'ios-cash', component: OrderPage },
-      { title: 'Contact Us', icon: 'contact', component: ContactPage },
-      { title: 'About Us', icon: 'information-circle', component: AboutPage }
+		// set our app's pages
+		this.pages = [
+			{ title: 'Home', component: HomePage, icon: 'home' },
+			{ title: 'Restaurants', icon: 'restaurant', component: RestaurantPage },
+			{ title: 'Cart', icon: 'ios-cart-outline', component: CartPage },
+			{ title: 'Order', icon: 'ios-cash', component: OrderPage },
+			{ title: 'Contact Us', icon: 'contact', component: ContactPage },
+			{ title: 'About Us', icon: 'information-circle', component: AboutPage }
+		];
+	}
 
-    ];
+	initializeApp() {
+			this.platform.ready().then(() => {
+				this.statusBar.styleDefault();
+			});
 
-  }
+			this.auth.afAuth.authState
+				.subscribe(
+					user => {
+						if (user) {
+							this.rootPage = HomePage;
+						} else {
+							this.rootPage = LoginPage;
+						}
+					},
+					() => {
+						this.rootPage = LoginPage;
+					}
+				);
+	}
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-    
-  }
-  openLogin() {
-    let modal = this.modalCtrl.create(LoginPage);
-    modal.present();
-  }
-  
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
+	login() {
+		this.menu.close();
+		this.auth.signOut();
+		this.nav.setRoot(LoginPage);
+	}
 
+	logout() {
+		this.menu.close();
+		this.auth.signOut();
+		this.nav.setRoot(HomePage);
+	}
+
+	openPage(page) {
+	this.menu.close();
+	this.nav.setRoot(page.component);
+	}
 }

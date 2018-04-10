@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { RestaurantProvider } from '../../providers/restaurant/restaurant';
 import { Restaurant } from '../../shared/restaurants';
 import { MenuPage } from '../menu/menu';
 import { RestaurantModel } from '../../models/restaurant';
@@ -20,7 +19,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
   selector: 'page-restaurant',
   templateUrl: 'restaurant.html',
 })
-export class RestaurantPage implements OnInit{
+export class RestaurantPage implements OnInit {
 
 
   restaurants: RestaurantModel[];
@@ -30,7 +29,7 @@ export class RestaurantPage implements OnInit{
   constructor(private database: AngularFireDatabase,
     private restaurantservice: CrowdservingProvider,
     private navCtrl: NavController) {
-     
+
   }
 
   ionViewDidLoad() {
@@ -44,13 +43,13 @@ export class RestaurantPage implements OnInit{
   }
 
 
-  restaurantSelected(event, restaurant, name:string) {
+  restaurantSelected(event, restaurant, name: string) {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(MenuPage, {
       restaurant: restaurant,
       restoName: name
     });
   }
-  
+
 
 }

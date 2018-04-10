@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Dish } from '../../shared/dish';
+import { Dishes } from '../../models/dishes';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
-import { baseURL } from '../../shared/baseurl';
-import { ProcessHttpmsgProvider } from '../process-httpmsg/process-httpmsg';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/catch';
+import { AngularFirestore } from 'angularfire2/firestore';
+import * as firebase from 'firebase/app';
+import { AuthProvider } from '../auth/auth';
 
 /*
   Generated class for the DishProvider provider.
@@ -16,24 +17,50 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class DishProvider {
 
-  constructor(public http: Http,
-    private processHTTPMsgService: ProcessHttpmsgProvider) { }
-
-  getDishes(): Observable<Dish[]> {
-    return this.http.get(baseURL + 'dishes')
-      .map(res => { return this.processHTTPMsgService.extractData(res); })
-      .catch(error => { return this.processHTTPMsgService.handleError(error); });
+  private currentUser: firebase.User = null;
+  constructor(private afs: AngularFirestore,
+    private authService: AuthProvider) {
+    this.authService.getAuthState()
+      .subscribe((user) => {
+        if (user) {
+          this.currentUser = user;
+        } else {
+          this.currentUser = null;
+        }
+      });
   }
-  getDish(id: number): Observable<Dish> {
-    return this.http.get(baseURL + 'dishes/' + id)
-      .map(res => { return this.processHTTPMsgService.extractData(res); })
-      .catch(error => { return this.processHTTPMsgService.handleError(error); });
+
+  getDishes(): Observable<Dishes[]> {
+    return this.afs.collection<Dishes>('menu')
+      .snapshotChanges()
+      .map(actions => {
+        return actions.map(action => {
+          const data = action.payload.doc.data() as Dishes;
+          const _id = action.payload.doc.id;
+          return { _id, ...data };
+        });
+      });
   }
 
-  getFeaturedDish(): Observable<Dish> {
-    return this.http.get(baseURL + 'dishes?featured=true')
-      .map(res => { return this.processHTTPMsgService.extractData(res)[0]; })
-      .catch(error => { return this.processHTTPMsgService.handleError(error); });
+  getDish(id: number): Observable<Dishes> {
+    return this.afs.doc<Dishes>('menu/' + id)
+      .snapshotChanges()
+      .map(action => {
+        const data = action.payload.data() as Dishes;
+        const _id = action.payload.id;
+        return { _id, ...data };
+      });
+  }
+
+  getFeaturedDish(): Observable<Dishes> {
+    return this.afs.collection<Dishes>('menu', ref => ref.where('featured', '==', true)).snapshotChanges()
+      .map(actions => {
+        return actions.map(action => {
+          const data = action.payload.doc.data() as Dishes;
+          const _id = action.payload.doc.id;
+          return { _id, ...data };
+        })[0];
+      });
   }
 
 

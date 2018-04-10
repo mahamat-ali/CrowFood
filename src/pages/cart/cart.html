@@ -20,20 +20,21 @@
   <div *ngIf="cartItems">
     <ion-list>
       <ion-item-sliding *ngFor="let cartItem of cartItems" #item>
-        <ion-item-options side="left">
+        <!-- <ion-item-options side="left">
           <button ion-button color="primary" (click)="addQuantity(cartItem.quantity)">
               <ion-icon name="add"></ion-icon>
           </button>
           <button ion-button color="danger" (click)="removeQuantity(cartItem.quantity)">
               <ion-icon name="remove"></ion-icon>
           </button>
-        </ion-item-options>
+        </ion-item-options> -->
         <ion-item>
           <ion-thumbnail item-left>
             <img src="{{cartItem.image}}" />
           </ion-thumbnail>
           <h3>{{cartItem.name}}</h3>
           <p>Price: {{cartItem.price}} &#8377;</p>
+          <p>{{cartItem.quantity}}</p>
         </ion-item>
         <ion-item-options side="right">
           <button ion-button color="danger" (click)="deleteItemFromCart(item, cartItem.id)">

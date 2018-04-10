@@ -1,70 +1,58 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Storage } from '@ionic/storage';
-import { User } from '../../shared/user';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NavController } from 'ionic-angular';
+import { HomePage } from '../home/home.page';
+import { AuthService } from '../../services/auth.service';
+import { SignupPage } from '../signup/signup';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
 export class LoginPage {
+	loginForm: FormGroup;
+	loginError: string;
 
-  loginForm: FormGroup;
-  user: User = { username: '', password: '' };
+	constructor(
+		private navCtrl: NavController,
+		private auth: AuthService,
+		fb: FormBuilder
+	) {
+		this.loginForm = fb.group({
+			email: ['', Validators.compose([Validators.required, Validators.email])],
+			password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+		});
+	}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public viewCtrl: ViewController,
-    private formBuilder: FormBuilder,
-    private storage: Storage) {
+  login() {
+		let data = this.loginForm.value;
 
-    storage.get('user').then(user => {
-      if (user) {
-        console.log(user);
-        this.user = user;
-        this.loginForm
-          .patchValue({
-            'username': this.user.username,
-            'password': this.user.password
-          });
-      }
-      else
-        console.log('user not defined');
-    });
+		if (!data.email) {
+			return;
+		}
 
+		let credentials = {
+			email: data.email,
+			password: data.password
+		};
+		this.auth.signInWithEmail(credentials)
+			.then(
+				() => this.navCtrl.setRoot(HomePage),
+				error => this.loginError = error.message
+			);
+    }
 
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      remember: true
-    });
-
+  signup(){
+    this.navCtrl.push(SignupPage);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  loginWithGoogle() {
+  this.auth.signInWithGoogle()
+    .then(
+      () => this.navCtrl.setRoot(HomePage),
+      error => console.log(error.message)
+    );
   }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
-
-  onSubmit() {
-    console.log(this.loginForm.value, this.user);
-    this.user.username = this.loginForm.get('username').value;
-    this.user.password = this.loginForm.get('password').value;
-    console.log(this.user);
-    if (this.loginForm.get('remember').value)
-      this.storage.set('user', this.user)
-    else
-      this.storage.remove('user');
-    this.viewCtrl.dismiss();
-  }
 }

@@ -1,35 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, DateTime } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { RestaurantModel } from '../../models/restaurant';
+import * as firestore from 'firebase/app';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs/Observable';
+import { Action } from 'rxjs/scheduler/Action';
+import { Order } from '../../models/orders';
+import { OrderProvider } from '../../providers/order/order';
 
-/**
- * Generated class for the OrderPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
+
+
 
 @IonicPage()
 @Component({
   selector: 'page-order',
   templateUrl: 'order.html',
 })
-export class OrderPage implements OnInit{
+export class OrderPage implements OnInit {
 
-  totalPrice: number;
-  totalQuantity: number;
+  orders: Order[];
+  order: Order;
+  errMsg: string;
 
-  constructor(public navCtrl: NavController, 
-    public navParams: NavParams) {
-    this.totalPrice = navParams.data.totalPrice;
-    this.totalQuantity = navParams.data.totalQuantity;
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private database: AngularFireDatabase,
+    private orderservice: OrderProvider) {
   }
+
   ngOnInit() {
+    // this.orderPrice = this.navParams.get('totalPrice');
+    // this.orderQuantity = this.navParams.get('totalQuantity');
+    // this.orderDate = this.navParams.get('orderDate'); 
+    this.orderservice.getOrder()
+      .subscribe(orders => this.orders = orders,
+        errMsg => this.errMsg = errMsg);
   }
-  
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderPage');
   }
 
-  
 
 }
