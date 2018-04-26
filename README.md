@@ -19,6 +19,15 @@ Git should be installed in your computer. Follow the instructions for your platf
 This application uses SASS, a CSS preprocessor. Follow the instructions for your platform to install it:
 
   <ul><li>http://sass-lang.com/install</li></ul>
+  <h1 style="color=red">For Tobi</h1>
+  <ol>
+  <li>install git <i> Download from the website and install</i></li>
+  <li>install nodejs <i> Download from the website and install</i></li>
+  <li><code>sudo npm install -g cordova ionic<code> <i>Type the command</i></li>
+  <li><code>git clone https://github.com/mahamat-ali/CrowFood.git</code> </i> Type the command to download CrowdFood</i></li>
+  <li>Install VS code to open the project with.</li>
+  <li><code>ionic serve -l</code> <i> To run the project in the project</i></li>
+  </ol>
 
 <h3>Cordova and Ionic</h3>
 
